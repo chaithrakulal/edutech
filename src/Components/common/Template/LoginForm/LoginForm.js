@@ -1,6 +1,5 @@
 import { Toaster } from "react-hot-toast";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import Home from "../../../core/Home/Home";
 
 const LoginForm = ({
   handleOnSubmit,
@@ -8,7 +7,6 @@ const LoginForm = ({
   showPassword,
   setShowPassword,
   formData,
-  handleOnSignUp,
 }) => {
   const { email, password } = formData;
   return (
@@ -60,13 +58,6 @@ const LoginForm = ({
         onClick={handleOnSubmit}
       >
         Login
-      </button>
-      <button
-        type="submit"
-        className="mt-6 rounded-[8px] bg-yellow-50 py-[8px] px-[12px] font-medium text-richblack-900"
-        onClick={handleOnSignUp}
-      >
-        Sign Up
       </button>
       <Toaster position="top-right" />
     </form>

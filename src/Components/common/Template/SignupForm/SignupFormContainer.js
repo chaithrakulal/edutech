@@ -2,6 +2,7 @@ import toast from "react-hot-toast";
 import SignupForm from "./SignupForm";
 import { useState } from "react";
 import axios from "axios";
+import { ACCOUNT_TYPE } from "../../../../utils/constants";
 
 const SignupFomContainer = () => {
   const [formData, setFormData] = useState({
@@ -13,7 +14,20 @@ const SignupFomContainer = () => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
+  const [accountType, setAccountType] = useState(ACCOUNT_TYPE.STUDENT);
+  // data to pass to Tab component
+  const tabData = [
+    {
+      id: 1,
+      tabName: "Student",
+      type: ACCOUNT_TYPE.STUDENT,
+    },
+    {
+      id: 2,
+      tabName: "Instructor",
+      type: ACCOUNT_TYPE.INSTRUCTOR,
+    },
+  ];
   const handleOnChange = (e) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -50,6 +64,7 @@ const SignupFomContainer = () => {
       password: "",
       confirmPassword: "",
     });
+    setAccountType(ACCOUNT_TYPE.STUDENT);
   };
 
   return (
@@ -61,6 +76,9 @@ const SignupFomContainer = () => {
       showConfirmPassword={showConfirmPassword}
       setShowConfirmPassword={setShowConfirmPassword}
       formData={formData}
+      tabData={tabData}
+      accountType={accountType}
+      setAccountType={setAccountType}
     />
   );
 };

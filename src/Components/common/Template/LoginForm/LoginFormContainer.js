@@ -1,18 +1,18 @@
 import toast from "react-hot-toast";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
 import LoginForm from "./LoginForm";
-import Home from "../../../core/Home/Home";
-import Login from "../../../../pages/Login";
-
+import { useNavigate } from "react-router-dom";
+import GlobalUserContextProvider from "../../../../Context/GlobalUserContext";
 const LoginFomContainer = () => {
+  const { setToken } = useContext(GlobalUserContextProvider);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const userLogin = false;
+  const navigate = useNavigate();
   const handleOnChange = (e) => {
     setFormData((prevData) => ({
       ...prevData,
@@ -20,31 +20,18 @@ const LoginFomContainer = () => {
     }));
   };
 
-  const handleOnSignUp = async () => {
-    <Login />;
-  };
   const handleOnSubmit = async (e) => {
     e.preventDefault();
     const addUser = await axios.get(
       `http://localhost:4000/User/fetchUser?email=${formData.email}&password=${formData.password}`
     );
-    if (formData?.password !== formData?.confirmPassword) {
-      toast.error("Passwords Do Not Match");
-      return;
-    }
-    if (addUser) {
+    if (addUser?.data?.length) {
       toast.success("User Logged In Successfully!");
-      userLogin = true;
-      <Home />;
+      setToken(addUser?.data.length);
+      navigate("/");
+    } else {
+      toast.error("User do not exist. Please Register!");
     }
-    // Reset
-    setFormData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    });
   };
 
   return (
@@ -56,7 +43,6 @@ const LoginFomContainer = () => {
       showConfirmPassword={showConfirmPassword}
       setShowConfirmPassword={setShowConfirmPassword}
       formData={formData}
-      handleOnSignUp={handleOnSignUp}
     />
   );
 };
